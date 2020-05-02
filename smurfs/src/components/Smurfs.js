@@ -85,7 +85,7 @@ const User = ({
                     <p>Loading1...</p>
                 ) : (
                     <div>
-                        <table className="table">
+                        <table className="table table-hover">
                             <thead className="thead-dark">
                                 <tr>
                                     <th scope="col">Id</th>
