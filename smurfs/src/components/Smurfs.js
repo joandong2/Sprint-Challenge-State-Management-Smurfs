@@ -44,7 +44,6 @@ const User = ({
     return (
         <div className="row smurf-container">
             <div className="col-sm-3">
-                <h4>Smurfs Form</h4>
                 <form onSubmit={submitHander}>
                     <div className="form-group">
                         <input
@@ -76,7 +75,7 @@ const User = ({
                             onChange={handleChange}
                         />
                     </div>
-                    <button type="submit" className="btn btn-dark">
+                    <button type="submit" className="btn btn-dark btn-sm">
                         Submit
                     </button>
                 </form>

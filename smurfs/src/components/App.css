@@ -2,8 +2,9 @@
 
 .App {
     font-family: "Montserrat", sans-serif;
+    padding-top: 20px;
 }
 
 .smurf-container {
-    margin-top: 20px;
+    margin-top: 40px;
 }
