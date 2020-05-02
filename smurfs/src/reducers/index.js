@@ -2,6 +2,7 @@ import {
     QUERY_START,
     QUERY_FETCH_SUCCESS,
     QUERY_POST_SUCCESS,
+    QUERY_DELETE_SUCCESS,
     QUERY_FAILURE,
 } from "../actions";
 
@@ -25,6 +26,12 @@ export const reducer = (state = initialState, action) => {
                 smurfs: action.payload,
             };
         case QUERY_POST_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                smurfs: action.payload,
+            };
+        case QUERY_DELETE_SUCCESS:
             return {
                 ...state,
                 isFetching: false,
