@@ -5,6 +5,10 @@
     padding-top: 20px;
 }
 
+table .btn {
+    margin-right: 10px;
+}
+
 .smurf-container {
     margin-top: 40px;
 }

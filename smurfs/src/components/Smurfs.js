@@ -1,41 +1,37 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { getSmurf, postSmurf, deleteSmurf } from "../actions";
+import { getSmurfs, getSmurf, postSmurf, deleteSmurf } from "../actions";
+import AddForm from "./AddForm.js";
+import EditForm from "./EditForm.js";
 
 const User = ({
+    getSmurfs,
     getSmurf,
     postSmurf,
     deleteSmurf,
     isFetching,
+    activeSmurf,
     smurfs,
     error,
 }) => {
     useEffect(() => {
-        getSmurf();
-    }, [getSmurf, postSmurf]);
+        getSmurfs();
+    }, [getSmurfs, postSmurf]);
 
-    const [smurf, setSmurf] = useState({
-        name: "",
-        age: "",
-        height: "",
-    });
-
-    const handleChange = (e) => {
-        setSmurf({
-            ...smurf,
-            [e.target.name]: e.target.value,
-        });
-    };
-
-    const submitHander = (e) => {
-        e.preventDefault();
+    const addHandler = (smurf) => {
         postSmurf(smurf.name, smurf.age, smurf.height, smurfs.length);
-        setSmurf({
-            name: "",
-            age: "",
-            height: "",
-        });
     };
+
+    const [editState, setEditState] = useState(false);
+
+    const editHandler = (e) => {
+        setEditState(true);
+        getSmurf(e.target.getAttribute("data-id"));
+    };
+
+    // const updateHandler = (e) => {
+    //     editSmurf(e.target.getAttribute("data-id"));
+    // };
 
     const deleteHandler = (e) => {
         deleteSmurf(e.target.getAttribute("data-id"));
@@ -44,45 +40,28 @@ const User = ({
     return (
         <div className="row smurf-container">
             <div className="col-sm-3">
-                <form onSubmit={submitHander}>
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            name="name"
-                            className="form-control"
-                            placeholder="name.."
-                            value={smurf.name}
-                            onChange={handleChange}
-                        />
+                {editState ? (
+                    <div>
+                        <p>Edit</p>
+                        {isFetching ? (
+                            <p>Loading...</p>
+                        ) : (
+                            <EditForm
+                                editHandler={editHandler}
+                                smurf={activeSmurf}
+                            />
+                        )}
                     </div>
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            name="age"
-                            className="form-control"
-                            placeholder="age.."
-                            value={smurf.age}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            name="height"
-                            className="form-control"
-                            placeholder="height.."
-                            value={smurf.height}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <button type="submit" className="btn btn-dark btn-sm">
-                        Submit
-                    </button>
-                </form>
+                ) : (
+                    <>
+                        <p>Add</p>
+                        <AddForm addHandler={addHandler} />
+                    </>
+                )}
             </div>
             <div className="col-sm-9">
                 {isFetching ? (
-                    <p>Loading1...</p>
+                    <p>Loading...</p>
                 ) : (
                     <div>
                         <table className="table table-hover">
@@ -95,7 +74,6 @@ const User = ({
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
-
                             <tbody>
                                 {smurfs
                                     ? smurfs.map((smurf, index) => (
@@ -105,6 +83,13 @@ const User = ({
                                               <td>{smurf.age} yrs. old</td>
                                               <td>{smurf.height}cm</td>
                                               <td>
+                                                  <button
+                                                      data-id={smurf.id}
+                                                      onClick={editHandler}
+                                                      className="btn btn-warning btn-sm"
+                                                  >
+                                                      Edit
+                                                  </button>
                                                   <button
                                                       data-id={smurf.id}
                                                       onClick={deleteHandler}
@@ -127,14 +112,17 @@ const User = ({
 
 // hook up the connect to our store
 const mapStateToProps = (state) => {
-    console.log("state", state);
     return {
+        activeSmurf: state.smurf[0],
         smurfs: state.smurfs,
         isFetching: state.isFetching,
         error: state.error,
     };
 };
 
-export default connect(mapStateToProps, { getSmurf, postSmurf, deleteSmurf })(
-    User
-);
+export default connect(mapStateToProps, {
+    getSmurfs,
+    getSmurf,
+    postSmurf,
+    deleteSmurf,
+})(User);
