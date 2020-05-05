@@ -72,6 +72,7 @@ export const updateSmurf = (id, name, age, height) => (dispatch) => {
             height,
         })
         .then((res) => {
+            //console.log(res);
             dispatch({ type: QUERY_UPDATE_SUCCESS, payload: res.data });
         })
         .catch((err) => {

@@ -18,11 +18,9 @@ const EditForm = (props) => {
         });
     };
 
-    console.log("smurf", smurf);
-
     const submitHander = (e) => {
         e.preventDefault();
-        props.editHandler(smurf);
+        props.updateHandler(smurf);
         setSmurf({
             name: "",
             age: "",
@@ -63,7 +61,7 @@ const EditForm = (props) => {
                 />
             </div>
             <button type="submit" className="btn btn-dark btn-sm">
-                Submit
+                Update
             </button>
         </form>
     );

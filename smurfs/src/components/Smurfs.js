@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { getSmurfs, getSmurf, postSmurf, deleteSmurf } from "../actions";
+import {
+    getSmurfs,
+    getSmurf,
+    postSmurf,
+    updateSmurf,
+    deleteSmurf,
+} from "../actions";
 import AddForm from "./AddForm.js";
 import EditForm from "./EditForm.js";
 
@@ -8,6 +14,7 @@ const User = ({
     getSmurfs,
     getSmurf,
     postSmurf,
+    updateSmurf,
     deleteSmurf,
     isFetching,
     activeSmurf,
@@ -29,9 +36,11 @@ const User = ({
         getSmurf(e.target.getAttribute("data-id"));
     };
 
-    // const updateHandler = (e) => {
-    //     editSmurf(e.target.getAttribute("data-id"));
-    // };
+    const updateHandler = (smurf) => {
+        //console.log(smurf);
+        updateSmurf(smurf.id, smurf.name, smurf.age, smurf.height);
+        setEditState(false);
+    };
 
     const deleteHandler = (e) => {
         deleteSmurf(e.target.getAttribute("data-id"));
@@ -49,6 +58,7 @@ const User = ({
                             <EditForm
                                 editHandler={editHandler}
                                 smurf={activeSmurf}
+                                updateHandler={updateHandler}
                             />
                         )}
                     </div>
@@ -124,5 +134,6 @@ export default connect(mapStateToProps, {
     getSmurfs,
     getSmurf,
     postSmurf,
+    updateSmurf,
     deleteSmurf,
 })(User);
